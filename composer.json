@@ -1,0 +1,16 @@
+{
+    "name": "pc/mvc",
+    "authors": [
+        {
+            "name": "Dk Cường",
+            "email": "dkcuongz@gmail.com"
+        }
+    ],
+    "require": {},
+        "autoload": {
+            "psr-4": {
+                "App\\": "app/"
+            }
+        }
+
+}
