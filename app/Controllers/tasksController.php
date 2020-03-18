@@ -4,36 +4,30 @@ namespace App\Controllers;
 require "../vendor/autoload.php";
 
 use App\Core\Controller;
-use App\Models\Task ;
-
+// use App\Models\Task ;
+use App\Models\TaskResourceModel ;
 class tasksController extends Controller
 {
-    // public $task;
-    //     public function __construct()
-    //     {
-    //         $this->task = new Task();
-    //     }
-
     function index()
     {
-        // require(ROOT . 'app/Models/Task.php');
-
-        $tasks = new Task();
-
+        $tasks = new TaskResourceModel();
         $d['tasks'] = $tasks->showAllTasks();
         $this->set($d);
         $this->render("index");
     }
 
     function create()
-    {
+    {  
         if (isset($_POST["title"]))
         {
-        //    require(ROOT . 'app/Models/Task.php');
-
-            $task= new Task();
-
-            if ($task->create($_POST["title"], $_POST["description"]))
+            $task = new TaskResourceModel();
+            $data=[
+              'title' => $_POST["title"],
+              'description' => $_POST["description"],
+              'created_at' => date('Y-m-d H:i:s'),
+              'updated_at' => date('Y-m-d H:i:s')
+            ];
+            if ($task->create($data))
             {
                 header("Location: " . WEBROOT . "tasks/index");
             }
@@ -44,14 +38,15 @@ class tasksController extends Controller
 
     function edit($id)
     {
-        // require(ROOT . 'app/Models/Task.php');
-        $task= new Task();
-
+        $task= new TaskResourceModel();
         $d["task"] = $task->showTask($id);
-
         if (isset($_POST["title"]))
         {
-            if ($task->edit($id, $_POST["title"], $_POST["description"]))
+            $data=[
+                'title' => $_POST["title"],
+                'description' => $_POST["description"],
+            ];
+            if ($task->edit($data,$id))
             {
                 header("Location: " . WEBROOT . "tasks/index");
             }
@@ -62,9 +57,7 @@ class tasksController extends Controller
 
     function delete($id)
     {
-    //    require(ROOT . 'app/Models/Task.php');
-
-        $task = new Task();
+        $task = new TaskResourceModel();
         if ($task->delete($id))
         {
             header("Location: " . WEBROOT . "tasks/index");

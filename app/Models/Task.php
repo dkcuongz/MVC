@@ -1,62 +1,52 @@
 <?php
 namespace App\Models;
 
-use App\Core\Model;
-use App\Config\Database;
+use App\Core\ResourceModel;
 
-class Task extends Model
+class Task extends ResourceModel
 {
-    public function create($title, $description)
-    {
-        $sql = "INSERT INTO tasks (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
+    protected static $tableName = 'tasks';
+    protected static $primaryKey = 'id';
 
-        $req = Database::getBdd()->prepare($sql);
-
-        return $req->execute([
-            'title' => $title,
-            'description' => $description,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
+    function getTableName(){
+        return $this->tableName;
     }
-
-    public function showTask($id)
-    {
-        $sql = "SELECT * FROM tasks WHERE id =" . $id;
-        $req = Database::getBdd()->prepare($sql);
-        $req->execute();
-        return $req->fetch();
+    function getPrimaryKey(){
+        return $this->primaryKey;
     }
-
-    public function showAllTasks()
-    {
-        $sql = "SELECT * FROM tasks";
-        $req = Database::getBdd()->prepare($sql);
-        $req->execute();
-        return $req->fetchAll();
+    function setId($value){
+        $this->setColumnValue('id', $value);
     }
-
-    public function edit($id, $title, $description)
-    {
-        $sql = "UPDATE tasks SET title = :title, description = :description , updated_at = :updated_at WHERE id = :id";
-
-        $req = Database::getBdd()->prepare($sql);
-
-        return $req->execute([
-            'id' => $id,
-            'title' => $title,
-            'description' => $description,
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
+    function getId(){
+        return $this->getColumnValue('id');
     }
-
-    public function delete($id)
-    {
-        $sql = 'DELETE FROM tasks WHERE id = ?';
-        $req = Database::getBdd()->prepare($sql);
-        return $req->execute([$id]);
+    
+    function setTitle($value){
+        $this->setColumnValue('title', $value);
+    }
+    function getTitle(){
+        return $this->getColumnValue('title');
+    }
+    
+    function setDescription($value){
+        $this->setColumnValue('description', $value);
+    }
+    function getDescription(){
+        return $this->getColumnValue('description');
+    }
+    
+    function setCreated_at($value){
+        $this->setColumnValue('created_at', $value);
+    }
+    function getCreated_at(){
+        return $this->getColumnValue('created_at');
+    }
+    
+    function setUpdate_at($value){
+        $this->setColumnValue('update_at', $value);
+    }
+    function getUpdate_at(){
+        return $this->getColumnValue('update_at');
     }
 }
 ?>
